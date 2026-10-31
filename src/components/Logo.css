@@ -1,0 +1,13 @@
+.logo {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  user-select: none;
+}

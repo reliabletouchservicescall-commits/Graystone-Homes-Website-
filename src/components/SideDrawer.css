@@ -1,0 +1,132 @@
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(12, 17, 25, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 61;
+  width: min(100%, 500px);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem clamp(1.5rem, 4vw, 3rem) 2.25rem;
+  background: var(--bg);
+  color: var(--ink);
+  border-left: 1px solid var(--line);
+  overflow-y: auto;
+}
+
+.drawer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.drawer__logo {
+  width: 180px;
+}
+
+.drawer__top-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.drawer__nav {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
+  flex: 1;
+}
+
+.drawer__link {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.drawer__index {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  width: 1.5rem;
+}
+
+.drawer__label {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 2.4rem);
+  line-height: 1.1;
+  transition: transform 0.5s var(--ease), color 0.3s;
+}
+
+.drawer__arrow {
+  margin-left: auto;
+  width: 1.4rem;
+  height: 1.4rem;
+  align-self: center;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.4s, transform 0.5s var(--ease);
+}
+
+.drawer__link:hover .drawer__label {
+  transform: translateX(8px);
+  font-style: italic;
+}
+
+.drawer__link:hover .drawer__arrow,
+.drawer__link.active .drawer__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.drawer__link.active .drawer__label {
+  color: var(--accent);
+}
+
+.drawer__footer {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.drawer__tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.drawer__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  width: fit-content;
+}
+
+.drawer__contact svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--accent);
+}
+
+.drawer__contact:hover {
+  color: var(--ink);
+}
+
+.drawer__cta {
+  margin-top: 1rem;
+  width: 100%;
+}

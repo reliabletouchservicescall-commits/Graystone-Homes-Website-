@@ -1,0 +1,114 @@
+.about__grid {
+  display: grid;
+  gap: clamp(4rem, 8vw, 7rem);
+  align-items: center;
+}
+
+@media (min-width: 980px) {
+  .about__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.about__media {
+  position: relative;
+  padding: 0 12% 14% 0;
+}
+
+.about__main {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.about__main img {
+  width: 100%;
+  height: 112%;
+  margin-top: -6%;
+  object-fit: cover;
+}
+
+.about__detail {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 46%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 10px solid var(--bg);
+  box-shadow: var(--card-shadow);
+}
+
+.about__detail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.seal {
+  position: absolute;
+  top: -2.5rem;
+  right: 4%;
+  width: clamp(120px, 14vw, 156px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--card-shadow);
+}
+
+.seal__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: spin 28s linear infinite;
+}
+
+.seal__ring text {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  fill: var(--ink);
+}
+
+.seal__mark {
+  width: 46%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.about__text {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  max-width: 34rem;
+}
+
+.about__copy .section-title {
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+}
+
+.about__quote {
+  position: relative;
+  margin: 2.5rem 0;
+  padding: 0.25rem 0 0.25rem 1.75rem;
+  border-left: 1px solid var(--accent);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.about__quote span {
+  color: var(--accent);
+  margin-right: 0.1em;
+}

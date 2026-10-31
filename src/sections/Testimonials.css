@@ -1,0 +1,87 @@
+.testimonials__grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 980px) {
+  .testimonials__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tcard {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(2rem, 3vw, 2.75rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.6s var(--ease), border-color 0.4s;
+}
+
+.tcard:hover {
+  transform: translateY(-6px);
+  border-color: var(--line-strong);
+}
+
+.tcard__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tcard__mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--accent);
+}
+
+.tcard__stars {
+  display: flex;
+  gap: 0.2rem;
+  color: var(--accent);
+}
+
+.tcard__stars svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.tcard__quote {
+  margin: 1.75rem 0 2.25rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--ink);
+  flex: 1;
+}
+
+.tcard__author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.tcard__author img {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(0.15);
+}
+
+.tcard__author strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tcard__author span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}

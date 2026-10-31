@@ -1,0 +1,100 @@
+.promise {
+  display: grid;
+  background: var(--feature-bg);
+  color: var(--feature-ink);
+}
+
+@media (min-width: 980px) {
+  .promise {
+    grid-template-columns: 1fr 1fr;
+    min-height: 680px;
+  }
+}
+
+.promise__media {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+}
+
+.promise__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promise__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 6vw, 6rem);
+}
+
+.promise__eyebrow {
+  color: var(--sand);
+}
+
+.promise__quote {
+  margin-top: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.2vw, 2.85rem);
+  line-height: 1.22;
+  color: var(--feature-ink);
+}
+
+.promise__quote em {
+  color: var(--sand);
+}
+
+.promise__sign {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.promise__symbol {
+  width: 3.25rem;
+}
+
+.promise__sign strong {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.promise__sign span {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--feature-muted);
+}
+
+.promise__pillars {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--feature-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--feature-muted);
+}
+
+.promise__pillars li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.promise__pillars svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--sand);
+}
