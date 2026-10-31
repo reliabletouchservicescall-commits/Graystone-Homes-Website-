@@ -2,6 +2,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "graystone-homes-website",
   "compatibility_date": "2025-09-01",
+  // Wrangler runs this before every deploy, so dist/ always exists
+  // even if no build command is set in the Cloudflare dashboard.
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./dist",
     // Serve index.html for client-side routes like /about and /contact.

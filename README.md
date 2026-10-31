@@ -17,7 +17,7 @@ The site deploys as a Cloudflare Worker with static assets, configured in `wrang
 
 | Setting        | Value                 |
 | -------------- | --------------------- |
-| Build command  | `npm run build`       |
+| Build command  | `npm run build` (optional — wrangler also runs it) |
 | Deploy command | `npx wrangler deploy` |
 | Node version   | 22 (from `.nvmrc`)    |
 
