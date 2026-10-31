@@ -11,18 +11,19 @@ npm run dev      # http://localhost:5173
 npm run build    # production build in dist/
 ```
 
-## Deploy on Cloudflare Pages
+## Deploy on Cloudflare
 
-Connect this repository in Cloudflare Pages and use:
+The site deploys as a Cloudflare Worker with static assets, configured in `wrangler.jsonc`.
 
-| Setting                | Value           |
-| ---------------------- | --------------- |
-| Framework preset       | Vite            |
-| Build command          | `npm run build` |
-| Build output directory | `dist`          |
-| Node version           | 22 (from `.nvmrc`) |
+| Setting        | Value                 |
+| -------------- | --------------------- |
+| Build command  | `npm run build`       |
+| Deploy command | `npx wrangler deploy` |
+| Node version   | 22 (from `.nvmrc`)    |
 
-`public/_redirects` sends every route to `index.html`, so pages like `/about` and `/contact` work on refresh.
+`not_found_handling: "single-page-application"` in `wrangler.jsonc` serves `index.html` for routes
+like `/about` and `/contact`, so they work on refresh. Do not add a `_redirects` file — Workers
+rejects the SPA catch-all rule as an infinite loop.
 
 ## Editing content
 
