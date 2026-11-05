@@ -29,3 +29,17 @@ export const LinkedinIcon = (props) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 )
+
+export const TikTokIcon = (props) => (
+  <svg {...base} {...props}>
+    <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5" />
+    <path d="M14 3c.4 2.6 2.4 4.6 5 5" />
+  </svg>
+)
+
+export const SOCIAL_ICONS = {
+  instagram: InstagramIcon,
+  facebook: FacebookIcon,
+  tiktok: TikTokIcon,
+  linkedin: LinkedinIcon,
+}

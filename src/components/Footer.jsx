@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
-import { FacebookIcon, InstagramIcon, LinkedinIcon } from './SocialIcons'
+import { SOCIAL_ICONS } from './SocialIcons'
 import Logo from './Logo'
-import { CONTACT, NAV_LINKS } from '../config/site'
+import { CONTACT, NAV_LINKS, SOCIALS, SOCIAL_HANDLE } from '../config/site'
 import './Footer.css'
 
-const SERVICES = ['Tenant Placement', 'Full Property Management', 'Rental Assessments', 'Tenant Screening', 'Rent Collection']
+const SERVICES = [
+  { label: 'Tenant Placement', id: 'tenant-placement' },
+  { label: 'Property Management', id: 'property-management' },
+  { label: 'Property Sales', id: 'property-sales' },
+  { label: 'Property Development', id: 'property-development' },
+  { label: 'Property Investment', id: 'property-investment' },
+]
 
 export default function Footer() {
   return (
@@ -36,8 +42,8 @@ export default function Footer() {
             <h4 className="footer__heading">Services</h4>
             <ul>
               {SERVICES.map((s) => (
-                <li key={s}>
-                  <Link to="/services">{s}</Link>
+                <li key={s.id}>
+                  <Link to={`/services#${s.id}`}>{s.label}</Link>
                 </li>
               ))}
             </ul>
@@ -60,22 +66,28 @@ export default function Footer() {
               </li>
             </ul>
             <div className="footer__social">
-              {[
-                { Icon: InstagramIcon, label: 'Instagram' },
-                { Icon: FacebookIcon, label: 'Facebook' },
-                { Icon: LinkedinIcon, label: 'LinkedIn' },
-              ].map(({ Icon, label }) => (
-                <a key={label} href="#" aria-label={label} className="footer__social-link">
-                  <Icon />
-                </a>
-              ))}
+              {SOCIALS.map(({ id, label, href }) => {
+                const Icon = SOCIAL_ICONS[id]
+                return (
+                  <a
+                    key={id}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${label}: @${SOCIAL_HANDLE}`}
+                    className="footer__social-link"
+                  >
+                    <Icon />
+                  </a>
+                )
+              })}
             </div>
           </div>
         </div>
 
         <div className="footer__cta">
           <p>Ready to let with confidence?</p>
-          <Link to="/contact" className="footer__cta-link">
+          <Link to="/contact?intent=management" className="footer__cta-link">
             Book a free assessment <ArrowUpRight strokeWidth={1.25} />
           </Link>
         </div>

@@ -30,7 +30,7 @@ export default function FinalCTA() {
           </p>
         </Reveal>
         <Reveal delay={0.18} className="final__actions">
-          <Link to="/contact" className="btn btn--light">
+          <Link to="/contact?intent=management" className="btn btn--light">
             Get My Free Assessment <ArrowRight />
           </Link>
           <a href={CONTACT.whatsappHref} target="_blank" rel="noreferrer" className="btn btn--ghost-light">

@@ -57,7 +57,7 @@ export default function Header() {
 
           <div className="header__actions">
             <ThemeToggle />
-            <Link to="/contact" className="btn btn--primary header__cta">
+            <Link to="/contact?intent=management" className="btn btn--primary header__cta">
               Free Assessment <ArrowRight />
             </Link>
             <button

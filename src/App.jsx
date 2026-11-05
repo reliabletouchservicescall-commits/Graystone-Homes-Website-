@@ -3,14 +3,19 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
-import PlaceholderPage from './pages/PlaceholderPage'
-import { PLACEHOLDER_PAGES } from './pages/placeholderContent'
+import AboutPage from './pages/AboutPage'
+import ServicesPage from './pages/ServicesPage'
+import PropertiesPage from './pages/PropertiesPage'
+import TenantsPage from './pages/TenantsPage'
+import ContactPage from './pages/ContactPage'
 
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    const target = hash && document.getElementById(hash.slice(1))
+    if (target) target.scrollIntoView({ behavior: 'smooth' })
+    else window.scrollTo(0, 0)
+  }, [pathname, hash])
   return null
 }
 
@@ -22,9 +27,11 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          {PLACEHOLDER_PAGES.map((page) => (
-            <Route key={page.path} path={page.path} element={<PlaceholderPage page={page} />} />
-          ))}
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/properties" element={<PropertiesPage />} />
+          <Route path="/tenants" element={<TenantsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </main>

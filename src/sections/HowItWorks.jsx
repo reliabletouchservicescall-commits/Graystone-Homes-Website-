@@ -53,7 +53,7 @@ export default function HowItWorks() {
         </div>
 
         <Reveal delay={0.4} className="how__cta">
-          <Link to="/contact" className="btn btn--primary">
+          <Link to="/contact?intent=management" className="btn btn--primary">
             Start in under 2 minutes <ArrowRight />
           </Link>
         </Reveal>

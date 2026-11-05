@@ -6,6 +6,14 @@ export const CONTACT = {
   region: 'Gauteng & Western Cape, South Africa',
 }
 
+export const SOCIAL_HANDLE = 'thegraystonehomesza'
+
+export const SOCIALS = [
+  { id: 'instagram', label: 'Instagram', href: `https://www.instagram.com/${SOCIAL_HANDLE}` },
+  { id: 'facebook', label: 'Facebook', href: `https://www.facebook.com/${SOCIAL_HANDLE}` },
+  { id: 'tiktok', label: 'TikTok', href: `https://www.tiktok.com/@${SOCIAL_HANDLE}` },
+]
+
 export const RESPONSE_HOURS = 2
 export const FOUNDED = 'January 2026'
 
@@ -26,7 +34,7 @@ export const STATS = [
   { value: RESPONSE_HOURS, suffix: 'hr', label: 'Guaranteed response time' },
 ]
 
-const unsplash = (id, w = 1600) =>
+export const unsplash = (id, w = 1600) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`
 
 export const IMAGES = {
@@ -46,8 +54,28 @@ export const IMAGES = {
     naledi: unsplash('1531123897727-8f129e1688ce', 300),
     sarah: unsplash('1573497019940-1c28c88b4f3e', 300),
   },
-  tenants: unsplash('1502672260266-1c1ef2d93688', 2000),
-  services: unsplash('1600596542815-ffad4c1539a9', 2000),
   properties: unsplash('1512917774080-9991f1c4c750', 2000),
   contact: unsplash('1600607687939-ce8a6c25118c', 2000),
+  tenants: {
+    hero: unsplash('1554995207-c18c203602cb', 2200),
+    checklist: unsplash('1615874959474-d609969a20ed', 1200),
+    freshStart: unsplash('1630699144867-37acec97df5a', 2000),
+  },
+  services: {
+    hero: unsplash('1582268611958-ebfd161ef9cf', 2200),
+    placement: unsplash('1626178793926-22b28830aa30', 1400),
+    management: unsplash('1600585154526-990dced4db0d', 1400),
+    sales: unsplash('1613977257363-707ba9348227', 1400),
+    development: unsplash('1503387762-592deb58ef4e', 1400),
+    investment: unsplash('1574362848149-11496d93a7c7', 1400),
+    statement: unsplash('1486406146926-c627a92ad1ab', 2000),
+  },
+  about: {
+    hero: unsplash('1600566753086-00f18fb6b3ea', 2200),
+    team: unsplash('1600880292203-757bb62b4baf', 1200),
+    interior: unsplash('1560448204-e02f11c3d0e2', 800),
+    handshake: unsplash('1521791136064-7986c2920216', 2000),
+    dreamHome: unsplash('1617806118233-18e1de247200', 1400),
+    investment: unsplash('1600596542815-ffad4c1539a9', 1400),
+  },
 }

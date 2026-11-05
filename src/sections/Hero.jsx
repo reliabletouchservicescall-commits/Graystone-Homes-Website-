@@ -81,7 +81,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: EASE, delay: 1.3 }}
         >
-          <Link to="/contact" className="btn btn--light">
+          <Link to="/contact?intent=management" className="btn btn--light">
             Get a Free Rental Assessment <ArrowRight />
           </Link>
           <a href={CONTACT.phoneHref} className="btn btn--ghost-light">

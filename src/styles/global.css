@@ -46,8 +46,6 @@
   --feature-line: rgba(242, 242, 235, 0.16);
   --header-bg: rgba(242, 242, 235, 0.86);
   --card-shadow: 0 1px 2px rgba(32, 46, 68, 0.04), 0 18px 40px -24px rgba(32, 46, 68, 0.28);
-  --skeleton-a: #e6e2d6;
-  --skeleton-b: #f1eee5;
   color-scheme: light;
 }
 
@@ -73,8 +71,6 @@
   --feature-line: rgba(242, 242, 235, 0.12);
   --header-bg: rgba(15, 20, 28, 0.84);
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 24px 48px -28px rgba(0, 0, 0, 0.8);
-  --skeleton-a: #1b2433;
-  --skeleton-b: #243044;
   color-scheme: dark;
 }
 
@@ -330,23 +326,6 @@ p {
 .text-link svg {
   width: 1rem;
   height: 1rem;
-}
-
-/* ------------------------------ Skeleton ------------------------------ */
-.skeleton {
-  border-radius: var(--radius);
-  background: linear-gradient(100deg, var(--skeleton-a) 30%, var(--skeleton-b) 50%, var(--skeleton-a) 70%);
-  background-size: 300% 100%;
-  animation: shimmer 1.8s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: 0 0;
-  }
 }
 
 /* ------------------------------ Utilities ------------------------------ */

@@ -87,7 +87,7 @@ export default function SideDrawer({ open, onClose }) {
               <a href={`mailto:${CONTACT.email}`} className="drawer__contact">
                 <Mail strokeWidth={1.5} /> {CONTACT.email}
               </a>
-              <Link to="/contact" className="btn btn--primary drawer__cta" onClick={onClose}>
+              <Link to="/contact?intent=management" className="btn btn--primary drawer__cta" onClick={onClose}>
                 Get a Free Rental Assessment <ArrowRight />
               </Link>
             </motion.div>
