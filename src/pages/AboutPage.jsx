@@ -70,24 +70,25 @@ function WhoWeAre() {
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="section-title who__title">
-              We are young, dynamic and <em>passionate</em> about property.
+              Built on trust, integrity and <em>results.</em>
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="who__lead">
-              At The Graystone Homes, we bring fresh energy, innovative thinking and a personal touch to the real estate
-              industry.
+              We are a professional, client-focused real estate company. We understand that property is more than a
+              transaction; it is about people, security and opportunity.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
             <p className="who__text">
-              From finding your dream home to managing your investment, we’re here to make every property move count.
+              Our approach combines industry knowledge, clear communication and efficient service to make every property
+              journey simpler, faster and more rewarding.
             </p>
           </Reveal>
           <Reveal delay={0.2} className="who__sign">
             <span className="who__sign-line" />
             <span>
-              Est. {FOUNDED} <em>· Secure Living, Elevated</em>
+              Your property. Your peace of mind. <em>Our commitment.</em>
             </span>
           </Reveal>
         </div>
@@ -238,7 +239,7 @@ export default function AboutPage() {
         title="About Us"
         heading="Who We Are"
         eyebrow="About The Graystone Homes"
-        intro="Young, dynamic and passionate about property. We bring fresh energy to every home we let and every investment we manage."
+        intro="A professional, client-focused real estate company built on trust, integrity and results."
         image={IMAGES.about.hero}
       />
       <WhoWeAre />

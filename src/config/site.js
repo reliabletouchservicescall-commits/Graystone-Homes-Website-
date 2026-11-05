@@ -14,6 +14,14 @@ export const SOCIALS = [
   { id: 'tiktok', label: 'TikTok', href: `https://www.tiktok.com/@${SOCIAL_HANDLE}` },
 ]
 
+// Contact form submissions are emailed to every inbox below via Web3Forms (web3forms.com).
+// Each inbox needs its own free access key: enter the address at https://web3forms.com,
+// copy the key they email to it, and paste it here. Keys are safe to keep in front-end code.
+export const ENQUIRY_INBOXES = [
+  { email: 'info@graystonehomes.co.za', accessKey: '' },
+  { email: 'bornwell@graystonehomes.co.za', accessKey: '' },
+]
+
 export const RESPONSE_HOURS = 2
 export const FOUNDED = 'January 2026'
 

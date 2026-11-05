@@ -53,6 +53,7 @@
 }
 
 .who__sign-line {
+  flex-shrink: 0;
   width: 3rem;
   height: 1px;
   background: var(--accent);

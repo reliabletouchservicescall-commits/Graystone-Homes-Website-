@@ -8,6 +8,7 @@ import {
   Copy,
   Home,
   KeyRound,
+  Loader2,
   Mail,
   MessageCircle,
   Phone,
@@ -19,7 +20,7 @@ import {
 import PageHero from '../components/PageHero'
 import Reveal, { fadeUp, stagger } from '../components/Reveal'
 import { SOCIAL_ICONS } from '../components/SocialIcons'
-import { CONTACT, IMAGES, RESPONSE_HOURS, SOCIALS, SOCIAL_HANDLE } from '../config/site'
+import { CONTACT, ENQUIRY_INBOXES, IMAGES, RESPONSE_HOURS, SOCIALS, SOCIAL_HANDLE } from '../config/site'
 import { LISTINGS } from '../config/properties'
 import './ContactPage.css'
 
@@ -36,13 +37,10 @@ const INTENTS = [
 
 const PROPERTY_TYPES = ['Apartment', 'House', 'Townhouse', 'Multiple units', 'Land / development']
 const BEDROOMS = ['Studio', '1', '2', '3', '4', '5+']
-const CONTACT_VIA = [
-  { id: 'WhatsApp', Icon: MessageCircle },
-  { id: 'Call', Icon: Phone },
-  { id: 'Email', Icon: Mail },
-]
+const EMPTY = { name: '', phone: '', email: '', area: '', type: '', beds: '', budget: '', message: '' }
 
-const EMPTY = { name: '', phone: '', email: '', area: '', type: '', beds: '', budget: '', message: '', via: 'WhatsApp' }
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
+const LIVE_INBOXES = ENQUIRY_INBOXES.filter((inbox) => inbox.accessKey)
 
 function initialState(params) {
   const listing = LISTINGS.find((l) => l.id === params.get('property'))
@@ -64,23 +62,28 @@ function initialState(params) {
   }
 }
 
-function buildMessage(intent, form) {
-  const shown = (key) => intent.fields.includes(key) && form[key]
-  const details = [
-    ['Name', form.name],
-    ['Phone', form.phone],
-    ['Email', form.email],
-    ['Area', shown('area')],
-    ['Property type', shown('type')],
-    ['Bedrooms', shown('beds')],
-    [intent.budgetLabel || 'Budget', shown('budget')],
-    ['Best way to reach me', form.via],
-  ]
-    .filter(([, value]) => value)
-    .map(([label, value]) => `${label}: ${value}`)
+function buildPayload(intent, form, listing) {
+  const shown = (key) => (intent.fields.includes(key) ? form[key].trim() : '')
+  const fields = {
+    'Enquiry type': intent.label,
+    Property: listing ? `${listing.title}, ${listing.suburb} (${listing.id})` : '',
+    Name: form.name.trim(),
+    Email: form.email.trim(),
+    Phone: form.phone.trim(),
+    Area: shown('area'),
+    'Property type': shown('type'),
+    Bedrooms: shown('beds'),
+    [intent.budgetLabel || 'Budget']: shown('budget'),
+    Message: form.message.trim(),
+  }
 
-  const greeting = `Hi Graystone, I’d like help with ${intent.id === 'other' ? 'a property enquiry' : intent.label.toLowerCase()}.`
-  return [greeting, details.join('\n'), form.message.trim()].filter(Boolean).join('\n\n')
+  return {
+    ...Object.fromEntries(Object.entries(fields).filter(([, v]) => v)),
+    subject: `Website enquiry: ${intent.label} from ${form.name.trim()}`,
+    from_name: 'The Graystone Homes website',
+    replyto: form.email.trim(),
+    botcheck: Boolean(form.botcheck),
+  }
 }
 
 /* ------------------------------ Copyable channel ------------------------------ */
@@ -148,7 +151,9 @@ function EnquiryForm() {
   const [intentId, setIntentId] = useState(start.intent)
   const [form, setForm] = useState(start.form)
   const [errors, setErrors] = useState({})
-  const [sent, setSent] = useState(null)
+  const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   const intent = INTENTS.find((i) => i.id === intentId)
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target ? e.target.value : e }))
@@ -156,28 +161,46 @@ function EnquiryForm() {
   const validate = () => {
     const next = {}
     if (!form.name.trim()) next.name = 'Please tell us your name.'
-    if (!form.phone.trim() && !form.email.trim()) next.phone = 'Add a phone number or an email so we can reply.'
-    if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) next.email = 'That email doesn’t look quite right.'
+    if (!form.email.trim()) next.email = 'Please add your email so we can reply.'
+    else if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) next.email = 'That email doesn’t look quite right.'
     setErrors(next)
     return Object.keys(next).length === 0
   }
 
-  const send = (channel) => {
-    if (!validate()) return
-    const text = buildMessage(intent, form)
-    if (channel === 'whatsapp') {
-      window.open(`${CONTACT.whatsappHref}?text=${encodeURIComponent(text)}`, '_blank', 'noopener')
-    } else {
-      const subject = `Website enquiry: ${intent.label}${form.name ? ` from ${form.name}` : ''}`
-      window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`
+  const submit = async (e) => {
+    e.preventDefault()
+    if (sending || !validate()) return
+    setSending(true)
+    setFailed(false)
+    const payload = buildPayload(intent, form, start.listing)
+    try {
+      if (LIVE_INBOXES.length === 0) throw new Error('No inbox access keys configured')
+      // One request per inbox; the enquiry counts as sent once any inbox has it.
+      const results = await Promise.allSettled(
+        LIVE_INBOXES.map(async ({ accessKey }) => {
+          const res = await fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ ...payload, access_key: accessKey }),
+          })
+          const data = await res.json().catch(() => ({}))
+          if (!res.ok || !data.success) throw new Error(data.message || `HTTP ${res.status}`)
+        }),
+      )
+      if (!results.some((r) => r.status === 'fulfilled')) throw new Error('Send failed')
+      setSent(true)
+    } catch {
+      setFailed(true)
+    } finally {
+      setSending(false)
     }
-    setSent(channel)
   }
 
   const reset = () => {
     setForm(EMPTY)
     setErrors({})
-    setSent(null)
+    setFailed(false)
+    setSent(false)
   }
 
   return (
@@ -200,15 +223,12 @@ function EnquiryForm() {
             >
               <Check strokeWidth={2} />
             </motion.span>
-            <h3>Your message is ready.</h3>
+            <h3>Thank you, your message is on its way.</h3>
             <p>
-              We’ve opened {sent === 'whatsapp' ? 'WhatsApp' : 'your email app'} with your enquiry filled in. Just
-              press send and we’ll reply within {RESPONSE_HOURS} hours.
+              Our team has received your enquiry and will reply to <strong>{form.email}</strong> within{' '}
+              {RESPONSE_HOURS} hours.
             </p>
             <div className="enquiry__sent-actions">
-              <button type="button" className="btn btn--ghost" onClick={() => setSent(null)}>
-                Edit my message
-              </button>
               <button type="button" className="btn btn--primary" onClick={reset}>
                 <RotateCcw /> Start a new enquiry
               </button>
@@ -218,10 +238,7 @@ function EnquiryForm() {
           <motion.form
             key="form"
             noValidate
-            onSubmit={(e) => {
-              e.preventDefault()
-              send('whatsapp')
-            }}
+            onSubmit={submit}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -269,13 +286,12 @@ function EnquiryForm() {
                 <input value={form.name} onChange={set('name')} autoComplete="name" aria-invalid={!!errors.name} placeholder="e.g. Thandi Mokoena" />
                 {errors.name && <span className="field__error">{errors.name}</span>}
               </Field>
-              <Field label="Phone / WhatsApp">
-                <input value={form.phone} onChange={set('phone')} type="tel" autoComplete="tel" aria-invalid={!!errors.phone} placeholder="e.g. 082 123 4567" />
-                {errors.phone && <span className="field__error">{errors.phone}</span>}
-              </Field>
-              <Field label="Email" optional>
+              <Field label="Email">
                 <input value={form.email} onChange={set('email')} type="email" autoComplete="email" aria-invalid={!!errors.email} placeholder="you@example.com" />
                 {errors.email && <span className="field__error">{errors.email}</span>}
+              </Field>
+              <Field label="Phone / WhatsApp" optional>
+                <input value={form.phone} onChange={set('phone')} type="tel" autoComplete="tel" aria-invalid={!!errors.phone} placeholder="e.g. 082 123 4567" />
               </Field>
 
               <AnimatePresence initial={false}>
@@ -324,31 +340,37 @@ function EnquiryForm() {
               </Field>
             </div>
 
-            <fieldset className="via">
-              <legend>Best way to reach you</legend>
-              <div className="via__options">
-                {CONTACT_VIA.map(({ id, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className={`via__opt ${form.via === id ? 'is-active' : ''}`}
-                    aria-pressed={form.via === id}
-                    onClick={() => setForm((f) => ({ ...f, via: id }))}
-                  >
-                    <Icon strokeWidth={1.5} /> {id}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
+            {/* Honeypot: hidden from people, filled in by spam bots. */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              className="enquiry__honey"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              checked={Boolean(form.botcheck)}
+              onChange={(e) => setForm((f) => ({ ...f, botcheck: e.target.checked }))}
+            />
 
             <div className="enquiry__actions">
-              <button type="submit" className="btn btn--primary">
-                <MessageCircle /> Send on WhatsApp
-              </button>
-              <button type="button" className="btn btn--ghost" onClick={() => send('email')}>
-                <Send /> Send by email
+              <button type="submit" className="btn btn--primary" disabled={sending}>
+                {sending ? (
+                  <>
+                    <Loader2 className="spin" /> Sending…
+                  </>
+                ) : (
+                  <>
+                    <Send /> Submit enquiry
+                  </>
+                )}
               </button>
             </div>
+            {failed && (
+              <p className="enquiry__failed" role="alert">
+                We couldn’t send your message just now. Please try again, or email us at{' '}
+                <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
+              </p>
+            )}
             <p className="enquiry__privacy">
               Your details go straight to our team and are only used to respond to your enquiry.
             </p>
